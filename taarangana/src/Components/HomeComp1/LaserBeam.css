@@ -1,0 +1,66 @@
+.laser-beam-container {
+  position: absolute;
+  top: -60vh; 
+  bottom: 15%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to top, 
+    transparent, 
+    black 15%, 
+    rgba(0,0,0,0.9) 60%, 
+    transparent 95%
+  );
+}
+
+.laser-beam-particles {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, var(--beam-color) 0.5px, transparent 0.5px),
+    radial-gradient(circle at 70% 60%, var(--beam-color) 0.8px, transparent 0.8px),
+    radial-gradient(circle at 40% 80%, var(--beam-color) 0.5px, transparent 0.5px),
+    radial-gradient(circle at 80% 10%, var(--beam-color) 0.7px, transparent 0.7px),
+    radial-gradient(circle at 50% 50%, #fff 0.4px, transparent 0.4px);
+  background-size: 50px 100px;
+  filter: blur(0.5px) drop-shadow(0 0 5px var(--beam-color));
+  animation: risingParticles 1.5s linear infinite;
+  opacity: 0.7;
+  /* Tell the browser to optimize this specific animation */
+  will-change: background-position;
+}
+
+.particle-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right, 
+    transparent, 
+    var(--beam-glow) 45%, 
+    var(--beam-glow) 55%, 
+    transparent
+  );
+  filter: blur(12px);
+}
+
+@keyframes risingParticles {
+  from { background-position: 0 100px; }
+  to { background-position: 0 0; }
+}
+
+/* --- Mobile GPU Optimizations --- */
+@media (max-width: 768px) {
+  .laser-beam-particles {
+    /* Remove drop-shadow on mobile to prevent staggering frame rates */
+    filter: blur(0.5px); 
+  }
+  
+  .particle-overlay {
+    /* Halve the blur radius for a cheaper render */
+    filter: blur(6px); 
+  }
+}

@@ -1,0 +1,9 @@
+.team-fixed-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.6);
+  pointer-events: none;
+}

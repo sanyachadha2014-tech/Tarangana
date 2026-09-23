@@ -1,0 +1,490 @@
+/* --- Configuration Variables for Easy Adjustment --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&family=Cinzel:wght@400;700&display=swap');
+
+:root {
+  --stage-floor-height: 15%;
+  --singer-base-height: 55vh;
+  --audience-height: 35%;
+  --logo-spacing: 55%;
+
+  /* GROUP CONTROL: Adjust this to scale everyone at once */
+  --group-scale: 1;
+  --group-gap: -20vw;
+  --group-max-width: 1000px;
+  --singer-hitbox-width: 250px; 
+
+  /* INDIVIDUAL NUDGES: Now relative to the group center */
+  --s1-scale: 0.9; --s2-scale: 0.7; --s3-scale: 1; --s4-scale: 0.67; --s5-scale: 0.95;
+  --s-nudge-y: 12vh;
+}
+
+.modern-scene-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.lasers-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* Lowest level above background */
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.5s ease;
+}
+
+.lasers-active .lasers-layer {
+  opacity: 1; /* Intensify on hover */
+}
+
+/* --- Base Stage Background --- */
+.modern-stage-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* --- Responsive Text & Logo Layers --- */
+.text-layer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1000px;
+  padding: 4vh 2vw 10vh;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  backdrop-filter: blur(25px);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+}
+
+.taarangana-heading { width: 60%; max-width: 400px; height: auto; }
+.etherea-heading { width: 100%; max-width: 220px; height: auto; }
+
+.fest-subtitle {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.5vw, 1.4rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: linear-gradient(to right, #c552ff, #ffffff, #d487fa);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+  text-shadow: 0 0 20px rgba(3, 233, 249, 0.2);
+  z-index: 4;
+}
+
+@keyframes shine { to { background-position: 200% center; } }
+
+.logo-layer {
+  position: absolute;
+  top: 4%;
+  width: 100%;
+  padding: 0 5%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center; 
+  gap: var(--logo-spacing); 
+  z-index: 5;
+  pointer-events: none;
+}
+
+.taarangana-logo, .igdtuw-logo { height: 8vh; max-height: 80px; width: auto; flex-shrink: 0; }
+
+/* --- COLLECTIVE SINGERS LAYER --- */
+.singers-layer {
+  position: absolute;
+  bottom: var(--stage-floor-height); 
+  left: 50%;
+  transform: translateX(-50%) scale(var(--group-scale));
+  transform-origin: bottom center;
+  
+  /* Using Grid instead of Flex ensures every singer gets the exact same space */
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  align-items: flex-end;
+  column-gap: var(--group-gap);
+  max-width: var(--group-max-width);
+  width: 95%;
+  max-width: var(--group-max-width);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.singer-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  /* Resetting nudges to be more uniform for collective resizing */
+  transform: translateY(var(--s-nudge-y)) scale(var(--indiv-scale));
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Create a stacking context for this wrapper */
+  z-index: 3;
+}
+
+/* Individual Singer Assignments */
+.singer-1 { --indiv-scale: var(--s1-scale); --nudge-x: var(--s1-nudge-x); --nudge-y: var(--s1-nudge-y); }
+.singer-2 { --indiv-scale: var(--s2-scale); --nudge-x: var(--s2-nudge-x); --nudge-y: var(--s2-nudge-y); }
+.singer-3 { --indiv-scale: var(--s3-scale); --nudge-x: var(--s3-nudge-x); --nudge-y: var(--s3-nudge-y); }
+.singer-4 { --indiv-scale: var(--s4-scale); --nudge-x: var(--s4-nudge-x); --nudge-y: var(--s4-nudge-y); }
+.singer-5 { --indiv-scale: var(--s5-scale); --nudge-x: var(--s5-nudge-x); --nudge-y: var(--s5-nudge-y); }
+
+.singer-image {
+  position: relative; /* Required for z-index to work */
+  z-index: 2; /* Forces image in front of LaserBeam */
+  width: 100%;
+  height: var(--singer-base-height);
+  min-height: 30vh; 
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 0 15px var(rgb(166, 71, 255)));
+}
+
+.singer-constant-glow {
+  position: absolute;
+  top: 60%; /* Adjusted to sit behind the torso */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 350px;
+  /* Using your requested purple color */
+  background: radial-gradient(circle, rgba(166, 71, 255, 0.863) 0%, transparent 70%);
+  filter: blur(40px);
+  z-index: 1; /* Behind the image */
+  pointer-events: none;
+}
+
+/* --- Refined Hover & Info --- */
+.singer-wrapper:hover .singer-image { filter: drop-shadow(0 0 40px var(--hover-color)); }
+
+.singer-info {
+  position: absolute;
+  bottom: 95%;
+  left: 50%;
+  transform: translateX(-50%) translateY(15px);
+  padding: 1rem 1.5rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 20;
+}
+
+.singer-info-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 15px var(--hover-color);
+}
+
+.singer-info-year {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.3rem, 1.5vw, 1.5rem);
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+.singer-wrapper:hover .singer-info { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+.question-mark {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 5.5rem;
+  color: var(--hover-color, #facc15);
+  text-shadow: 0 0 15px var(--hover-color), 0 0 40px var(--hover-color);
+  animation: mysteryFloat 2.5s ease-in-out infinite;
+}
+
+@keyframes mysteryFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+/* --- Audience & Effects --- */
+.audience-layer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: var(--audience-height);
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.audience-left, .audience-right {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.audience-left { animation: crossFadeLeft 1.5s ease-in-out infinite; }
+.audience-right { animation: crossFadeRight 1.5s ease-in-out infinite; }
+
+@keyframes crossFadeLeft { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes crossFadeRight { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+/* --- Floating Scroll Explorer Styling --- */
+.homecomp2-scroll-explorer {
+  position: absolute;
+  /* Positioned above the logo loop footer */
+  bottom: 13vh; 
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px; /* Tight gap between text and wide arrow */
+  z-index: 40;
+  pointer-events: none;
+  
+  /* Applying the float to the entire group */
+  animation: floatExplore 2.5s ease-in-out infinite;
+}
+
+.explorer-text {
+  font-family: 'Monteserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: bolder;
+  letter-spacing: 0.6em; /* Extra spacing for high-end look */
+  color: #ffffff;
+  opacity: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.explorer-arrow {
+  color: #ffffff;
+  opacity: 1;
+  /* Subtle glow to match the neon vibe */
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
+}
+
+.explorer-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 10%,
+    rgb(0, 0, 0) 30%,
+    rgb(0, 0, 0) 70%,
+    transparent 10%
+  );
+  filter: blur(15px); /* Softens the rectangular edges */
+  z-index: 39;
+}
+
+/* Smooth Floating Animation for the collective element */
+@keyframes floatExplore {
+  0%, 100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 15px);
+  }
+}
+
+/* Ensuring it sits well on mobile */
+@media (max-width: 768px) {
+  .homecomp2-scroll-explorer {
+    bottom: 11vh;
+  }
+  .explorer-text {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+  }
+  .explorer-arrow svg {
+    width: 35px;
+    height: 12px;
+  }
+}
+
+/* --- Footer Area --- */
+.modern-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  padding: 1rem 0;
+  pointer-events: none;
+}
+
+/* --- Collective Mobile Logic --- */
+/* --- Collective Mobile Logic (3D Carousel Queue - Final Polish) --- */
+@media (max-width: 768px) {
+  :root {
+    /* Lowered the carousel to ground them closer to the audience */
+    --stage-floor-height: 12%; 
+    /* Scaled down the entire carousel slightly */
+    --singer-base-height: 48vh; 
+    
+    /* Explicitly override desktop scales to make their base dimensions 100% equal */
+    --s1-scale: 1; 
+    --s2-scale: 1; 
+    --s3-scale: 1; 
+    --s4-scale: 1; 
+    --s5-scale: 1;
+    --s-nudge-y: 0; 
+  }
+  
+  .text-layer { padding-top: 10vh; }
+  .taarangana-heading { width: 85%; }
+  .etherea-heading { width: 80%; margin-top: 5px; }
+  .fest-subtitle { font-size: 0.75rem; margin-top: 5px; }
+
+  .logo-layer { top: 3%; justify-content: space-between; padding: 0 6vw; gap: 0; }
+  .taarangana-logo, .igdtuw-logo { height: 6vh; }
+
+  /* OVERLAPPING CLUSTER LOGIC */
+  .singers-layer {
+    display: block; 
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: var(--stage-floor-height);
+    width: 100vw; 
+    max-width: 500px;
+    height: var(--singer-base-height);
+    perspective: 1000px; 
+  }
+
+  .singer-wrapper {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    width: auto;
+    transform-origin: bottom center;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: none !important; 
+  }
+
+  .singer-image { 
+    height: 100%; 
+    width: auto; 
+    object-fit: contain; 
+    position: relative;
+    z-index: 1; /* Ensures image stays behind the text */
+  }
+
+  /* --- THE CAROUSEL POSITIONS --- */
+
+  .pos-center { 
+    left: 50%; 
+    transform: translateX(-50%) scale(1) !important; 
+    z-index: 10; 
+    filter: brightness(1) drop-shadow(0 0 25px var(--hover-color));
+    opacity: 1;
+  }
+  
+  .pos-right-1 { 
+    left: 72%; 
+    transform: translateX(-50%) scale(0.8) !important; 
+    z-index: 5; 
+    filter: brightness(0.4) grayscale(0.5); 
+    opacity: 0.9;
+  }
+
+  .pos-left-1 { 
+    left: 28%; 
+    transform: translateX(-50%) scale(0.8) !important; 
+    z-index: 5; 
+    filter: brightness(0.4) grayscale(0.5); 
+    opacity: 0.9;
+  }
+
+  .pos-right-2 { 
+    left: 88%; 
+    transform: translateX(-50%) scale(0.65) !important; 
+    z-index: 1; 
+    filter: brightness(0.15) grayscale(0.9); 
+    opacity: 0.6;
+  }
+
+  .pos-left-2 { 
+    left: 12%; 
+    transform: translateX(-50%) scale(0.65) !important; 
+    z-index: 1; 
+    filter: brightness(0.15) grayscale(0.9); 
+    opacity: 0.6;
+  }
+
+  /* --- TEXT CENTERED IN FRONT --- */
+  .singer-info {
+    top: 50%; /* Drops the text to the vertical middle of the wrapper */
+    bottom: auto; /* Clears the old desktop 'bottom' rule */
+    left: 50%;
+    z-index: 20; /* Forces the text to hover in front of the singer */
+    width: max-content;
+    opacity: 0;
+    
+    /* Soft dark glow to ensure readability over the bright lasers */
+    background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, transparent 65%);
+    padding: 1rem 2rem;
+    
+    /* Start slightly lower for a smooth float-up effect */
+    transform: translate(-50%, -30%);
+    transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+  }
+  
+  .pos-center .singer-info {
+    opacity: 1;
+    /* Centers it perfectly in the middle of their chest/torso */
+    transform: translate(-50%, -50%);
+  }
+
+  .singer-info-name { 
+    font-size: 1.3rem; /* Slightly larger for center focus */
+    text-shadow: 0 0 15px var(--hover-color), 0 0 30px #000; 
+  }
+  
+  .singer-info-year { 
+    font-size: 1.1rem; 
+    text-shadow: 0 0 10px #000;
+  }
+
+  /* UI Layout fixes */
+  .audience-layer { height: 28%; bottom: 0; pointer-events: none; }
+  .homecomp2-scroll-explorer { bottom: 12vh; }
+}
+
+/* ==========================================================
+   CUSTOM LAPTOP OVERRIDE: SHIFT AUDIENCE HANDS DOWN - NEW ADDITION
+   ========================================================== */
+@media screen and (min-width: 1024px) and (max-width: 1536px) {
+  .audience-layer {
+    height: 38% !important;        /* Slightly reduced height to push the layer bounds down */
+    bottom: -2% !important;        /* Pushes the container slightly lower towards the screen edge */
+    overflow: visible !important;  
+  }
+
+  .audience-left, 
+  .audience-right {
+    object-fit: contain !important;     
+    object-position: bottom center !important; 
+  }
+}

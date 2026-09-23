@@ -1,0 +1,76 @@
+/* --- Global Scroll Reset --- */
+
+/* Prevent the main body from scrolling, forcing the browser to rely on your wrapper */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; 
+  height: 100%;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.home-page-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.home-page-wrapper {
+  width: 100vw;
+  height: 100dvh; /* CHANGED: Use dynamic viewport height */
+  background-color: #050505;
+  overflow-y: auto; /* auto is generally safer than scroll */
+  overflow-x: hidden;
+  -ms-overflow-style: none; 
+  scrollbar-width: none;  
+
+  /* Standard Snap Scroll Configuration */
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+/* --- Section Container --- */
+.snap-section {
+  width: 100vw;
+  height: 100dvh; /* CHANGED: Match the wrapper */
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  z-index: 1; /* MOVED HERE: from the deleted div in JSX */
+  overflow: hidden; 
+  background: transparent;
+}
+
+/* --- Navbar Transition Logic --- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5000; 
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.6s;
+  will-change: opacity, transform;
+}
+
+.navbar-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px); 
+}
+
+.navbar-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* --- Mobile Specific Tweaks --- */
+@media (max-width: 768px) {
+  .home-page-wrapper {
+    /* Because we fixed the 100dvh issue, 'mandatory' should now feel great on mobile. 
+       'proximity' combined with vh issues was likely making it feel extra wonky. */
+    scroll-snap-type: y mandatory; 
+  }
+}

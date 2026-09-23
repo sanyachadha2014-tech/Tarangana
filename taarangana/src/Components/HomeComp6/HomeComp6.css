@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap');
+
+/* --- Viewport & Base --- */
+.homecomp6-viewport {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #291a50 0%, #050505 100%);
+  font-family: 'Inter', sans-serif;
+  padding-top: 20px;
+}
+
+/* ---------------- Centered & Responsive Wheels ---------------- */
+
+/* Position the wrappers exactly by their center points */
+.wheel-wrapper {
+  position: absolute;
+  z-index: 60;
+  pointer-events: none;
+  transform: translate(-50%, -50%); /* Ensures perfectly centered coordinates */
+}
+
+/* Calculated to be perfectly centered. 
+  Vertical gaps are mapped to 'vw' so the constellation shape 
+  never stretches or distorts on narrow/tall mobile screens.
+*/
+.wheel-top-left     { top: calc(50vh - 5vw); left: 29vw; }
+.wheel-mid-right    { top: calc(50vh + 5vw); left: 43vw; }
+.wheel-bottom-left  { top: calc(50vh - 5vw); left: 57vw; }
+.wheel-bottom-right { top: calc(50vh + 5vw); left: 71vw; }
+
+.wheel-decor {
+  /* Lowered minimum bounds so it scales gracefully down to mobile screens */
+  width: clamp(60px, 18vw, 320px); 
+  height: auto;
+  transform-origin: center center;
+  opacity: 0;
+  filter:
+    drop-shadow(0 0 25px rgba(255,200,120,0.35))
+    drop-shadow(0 0 40px rgba(120,160,255,0.25));
+}
+
+@keyframes wheelRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes wheelFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; visibility: hidden; }
+}
+
+@keyframes wheelAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+    filter: blur(10px) brightness(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+.start-animation .wheel-decor {
+  opacity: 1;
+  animation:
+    wheelAppear 0.45s ease forwards,
+    wheelRotate 8s linear infinite,
+    wheelFadeOut 0.45s ease 1.5s forwards;
+  animation-fill-mode: forwards;
+}
+
+/* ---------------- Reveal FAQ heading & cards ---------------- */
+
+@keyframes faqReveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* FAQ Layout */
+.faq-internal-section {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8vh 20px 4vh 20px;
+  z-index: 5;
+  position: relative;
+  box-sizing: border-box;
+  opacity: 0; /* BUG FIX: Ensures the heading/subtitle are invisible before the delay finishes */
+}
+
+.start-animation .faq-internal-section {
+  /* BUG FIX: Changed 'forwards' to 'both' to enforce the 0% keyframe opacity during the 1.6s delay */
+  animation: faqReveal 0.8s cubic-bezier(.2,.9,.2,1) 1.6s both;
+}
+
+.homecomp6-header {
+  text-align: center;
+  flex-shrink: 0; /* Keeps header from squishing */
+}
+
+.homecomp6-heading-img {
+  width: 500px;
+  max-width: 90vw;
+  margin-bottom: 20px;
+}
+
+.homecomp6-text {
+  letter-spacing: 0.5rem;
+  font-size: 0.75rem;
+  color: #c0a7ff;
+  font-weight: bold;
+  opacity: 0.6;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+/* Custom Scroll Container applied ONLY to the list */
+.homecomp6-scroll-container {
+  width: 100%;
+  max-width: 800px;
+  flex-grow: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-bottom: 40px; /* Bottom padding for scroll breathing room */
+}
+
+.homecomp6-scroll-container::-webkit-scrollbar { display: none; }
+
+.homecomp6-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.homecomp6-item {
+  opacity: 0;
+  transform: translateY(18px);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(167, 211, 255, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+
+.start-animation .homecomp6-item {
+  /* Added 'both' here as well for consistency */
+  animation: cardIn 0.45s cubic-bezier(.2,.9,.2,1) both;
+}
+
+/* Staggered load */
+.homecomp6-list .homecomp6-item:nth-child(1) { animation-delay: 2.2s; }
+.homecomp6-list .homecomp6-item:nth-child(2) { animation-delay: 2.28s; }
+.homecomp6-list .homecomp6-item:nth-child(3) { animation-delay: 2.36s; }
+.homecomp6-list .homecomp6-item:nth-child(4) { animation-delay: 2.44s; }
+.homecomp6-list .homecomp6-item:nth-child(5) { animation-delay: 2.52s; }
+.homecomp6-list .homecomp6-item:nth-child(6) { animation-delay: 2.60s; }
+.homecomp6-list .homecomp6-item:nth-child(7) { animation-delay: 2.68s; }
+.homecomp6-list .homecomp6-item:nth-child(8) { animation-delay: 2.76s; }
+.homecomp6-list .homecomp6-item:nth-child(9) { animation-delay: 2.84s; }
+
+.homecomp6-item:hover {
+  background: rgba(167, 211, 255, 0.06);
+  border-color: rgba(167, 211, 255, 0.3);
+}
+
+.homecomp6-question {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.homecomp6-chevron {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #c0a7ff;
+  border-bottom: 2px solid #c0a7ff;
+  transform: rotate(45deg);
+  transition: 0.3s;
+}
+
+.homecomp6-item.active .homecomp6-chevron { transform: rotate(225deg); }
+
+.homecomp6-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.4s ease;
+  padding: 0 25px;
+  opacity: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.homecomp6-answer.open {
+  max-height: 200px;
+  padding-bottom: 25px;
+  opacity: 1;
+}
+
+.homecomp6-answer p { 
+  color: #c0a7ff; 
+  font-size: 0.9rem; 
+  line-height: 1.6; 
+  border-top: 1px solid rgba(255,255,255,0.05); 
+  padding-top: 15px; 
+}
+
+/* Bar Wipe Animation */
+.homecomp6-bar-overlay {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  pointer-events: none;
+  mask-image: linear-gradient(to right, black, black), linear-gradient(to left, black, black);
+  -webkit-mask-image: linear-gradient(to right, black, black), linear-gradient(to left, black, black);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: 0% 100%, 0% 100%;
+  -webkit-mask-size: 0% 100%, 0% 100%;
+  mask-position: left center, right center;
+  -webkit-mask-position: left center, right center;
+  transition: mask-size 0.6s cubic-bezier(0.65, 0, 0.35, 1), -webkit-mask-size 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  opacity: 50%;
+}
+
+/* ---------------- 1. Hover Fix (Desktop/Pointer devices only) ---------------- */
+@media (hover: hover) {
+  .homecomp6-item:hover {
+    background: rgba(167, 211, 255, 0.06);
+    border-color: rgba(167, 211, 255, 0.3);
+  }
+
+  .homecomp6-item:hover .homecomp6-bar-overlay {
+    mask-size: 51% 100%, 51% 100%;
+    -webkit-mask-size: 51% 100%, 51% 100%;
+  }
+}
+
+/* ---------------- 2. Mobile Optimizations ---------------- */
+@media (max-width: 768px) {
+  /* Scale down heading image slightly for mobile */
+  .homecomp6-heading-img {
+    width: 320px; 
+  }
+
+  /* Reduce padding on mobile to maximize card space */
+  .faq-internal-section {
+    padding: 6vh 15px 2vh 15px;
+  }
+}
+
+/* Targeting the wheels specifically when JS detects mobile.
+   Rotates the interlocking "zigzag" chain 90 degrees to flow vertically.
+*/
+.is-mobile .wheel-decor {
+  /* Size scaled to vw so they perfectly interlock on any mobile screen width */
+  width: clamp(140px, 42vw, 180px); 
+}
+
+/* Vertical Interlocking Chain:
+  X oscillates between 35vw (left) and 65vw (right).
+  Y steps down by exactly 24vw each time to maintain the precise overlapping ratio of the desktop view.
+*/
+
+/* Top Point (Spider) */
+.is-mobile .wheel-top-left { 
+  top: 38vh; /* Pushed down safely below the subtitle */
+  left: 35vw; 
+}
+
+/* Second Point (Leaf) */
+.is-mobile .wheel-mid-right { 
+  top: calc(38vh + 24vw); 
+  left: 65vw; 
+}
+
+/* Third Point (Peacock) */
+.is-mobile .wheel-bottom-left { 
+  top: calc(38vh + 48vw); 
+  left: 35vw; 
+}
+
+/* Bottom Point (Sword) */
+.is-mobile .wheel-bottom-right { 
+  top: calc(38vh + 72vw); 
+  left: 65vw; 
+}
+
+/* ----- Accessibility ----- */
+@media (prefers-reduced-motion: reduce) {
+  .wheel-decor,
+  .faq-internal-section,
+  .homecomp6-item {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+    filter:
+      drop-shadow(0 0 25px rgba(255,200,120,0.35))
+      drop-shadow(0 0 40px rgba(120,160,255,0.25));
+  }
+}

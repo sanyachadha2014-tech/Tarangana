@@ -1,0 +1,275 @@
+/* =========================================
+   VIEWPORT & BACKGROUND
+   ========================================= */
+.homecomp4-viewport {
+  width: 100%;
+  height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: relative;
+  z-index: 10;
+  overflow: hidden; 
+  
+  /* Buffer to permanently clear the fixed navbar */
+  padding-top: clamp(100px, 12vh, 140px); 
+  padding-bottom: clamp(20px, 4vh, 80px);
+  padding-left: 0;
+  padding-right: 0;
+  
+  box-sizing: border-box;
+}
+
+.homecomp4-center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  width: 100%;
+  height: 100%;
+  max-width: 1600px; 
+  z-index: 20;
+  margin: auto; 
+}
+
+/* =========================================
+   SPOTLIGHT & CORNER WHEELS
+   ========================================= */
+.homecomp4-spotlight-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+
+.homecomp4-spotlight-layer.is-active {
+  opacity: 1;
+}
+
+.corner-wheel {
+  position: absolute;
+  width: clamp(150px, 15vw, 250px);
+  height: auto;
+  opacity: 0.7;
+  animation: slow-spin 30s linear infinite;
+}
+
+.wheel-tl { top: 0%; left: 0%; transform-origin: center; }
+.wheel-tr { top: 0%; right: 0%; transform-origin: center; }
+.wheel-bl { bottom: 0%; left: 0%; transform-origin: center; }
+.wheel-br { bottom: 0%; right: 0%; transform-origin: center; }
+
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================
+   HEADER & GRID
+   ========================================= */
+.homecomp4-header {
+  margin-bottom: clamp(15px, 3vh, 40px);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.8s ease-out;
+}
+
+.homecomp4-header.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.homecomp4-title-img {
+  width: clamp(200px, 35vw, 400px);
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+}
+
+.homecomp4-grid {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 2vw, 25px); 
+  perspective: 2000px;
+  width: 100%;
+  padding: clamp(20px, 3vh, 50px) 20px; 
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CARD STYLES (FLUID)
+   ========================================= */
+.homecomp4-card-outer {
+  width: min(100%, 320px); 
+  max-height: 70vh; 
+  aspect-ratio: 32 / 52;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.homecomp4-card-outer.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.homecomp4-card-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: clamp(12px, 2vw, 28px);
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); 
+  transition: transform 0.15s ease-out, box-shadow 0.4s ease, border 0.4s ease;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.homecomp4-card-visual.is-hovered {
+  border: 1px solid rgba(192, 192, 192, 0.4);
+  box-shadow: 0 25px 60px rgba(192, 192, 192, 0.4);
+}
+
+/* =========================================
+   GLITTER & INTERIOR
+   ========================================= */
+.glitter-particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1000;
+  animation: glitter-burst 1.5s ease-out forwards;
+}
+
+@keyframes glitter-burst {
+  0% { transform: scale(0); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: scale(1.2) translateY(50px); opacity: 0; }
+}
+
+.homecomp4-solid-bg {
+  position: absolute;
+  inset: 0;
+  background: #0f172a;
+  z-index: 0;
+}
+
+.homecomp4-embroidery-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+}
+
+.homecomp4-assembly {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 5%;
+}
+
+.homecomp4-frame-container {
+  position: relative;
+  height: 72%;
+  aspect-ratio: 1 / 1.35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(50px);
+}
+
+.homecomp4-photo-clip {
+  position: absolute;
+  top: 13%; left: 13%; width: 74%; height: 74%;
+  z-index: 2;
+  overflow: hidden;
+  clip-path: ellipse(50% 50% at 50% 50%);
+  -webkit-clip-path: ellipse(50% 50% at 50% 50%);
+}
+
+.homecomp4-member-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+  will-change: transform;
+}
+
+.homecomp4-frame-img {
+  position: relative;
+  width: 100%; height: 100%;
+  z-index: 3;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.homecomp4-plate-wrapper {
+  width: 90%;
+  transform: translateZ(70px);
+}
+
+.homecomp4-plate-img {
+  width: 100%;
+  filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.7));
+}
+
+/* =========================================
+   RESPONSIVE (HORIZONTAL SCROLL < 1400px)
+   ========================================= */
+
+/* Triggering at 1400px because 4 cards require much more horizontal space */
+@media (max-width: 1400px) {
+  .homecomp4-header {
+    text-align: center;
+  }
+
+  .homecomp4-grid { 
+    flex-wrap: nowrap; /* Forces a single horizontal row for snap scrolling */
+    justify-content: flex-start;
+    width: 100vw;
+    overflow-x: auto;
+    overflow-y: hidden; 
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    
+    padding: clamp(20px, 4vh, 50px) calc(50vw - (min(80vw, 320px) / 2)); 
+    perspective: none; 
+  }
+
+  .homecomp4-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .homecomp4-grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .homecomp4-card-outer {
+    width: min(80vw, 320px); 
+    max-height: 65vh; 
+    scroll-snap-align: center; 
+    scroll-snap-stop: always;  
+  }
+
+  .homecomp4-card-outer:last-child {
+    margin-right: 50px; 
+  }
+
+  .corner-wheel { 
+    display: none; 
+  }
+}

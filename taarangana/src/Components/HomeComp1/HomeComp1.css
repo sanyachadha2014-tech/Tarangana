@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap');
+
+/* Main Root - Global Reset and Setup */
+.homecomp1-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000 !important;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.site-visit-counter {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 1. Traditional Counter (Dramatic & Golden) */
+.traditional-counter {
+  /* Warm, dark radial fade to make gold pop */
+  background: radial-gradient(
+    circle at center, 
+    rgba(26, 18, 5, 0.7) 0%, 
+    rgba(10, 6, 0, 0.3) 50%, 
+    transparent 85%
+  );
+}
+
+.traditional-counter .counter-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #f5d98b;
+  opacity: 0.9;
+  margin-bottom: 2px;
+}
+
+.traditional-counter .counter-number {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(to bottom, #fff6d5 0%, #f5d98b 50%, #b8860b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(212, 170, 84, 0.5));
+}
+
+/* 2. Modern Counter (Neon Purple & Tech) */
+.modern-counter {
+  /* Deep purple/black radial fade for neon contrast */
+  background: radial-gradient(
+    circle at center, 
+    rgba(15, 0, 31, 0.8) 0%, 
+    rgba(10, 0, 20, 0.4) 50%, 
+    transparent 85%
+  );
+}
+
+.modern-counter .counter-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.modern-counter .counter-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 
+    0 0 5px #fff,
+    0 0 15px #9333ea,
+    0 0 30px #9333ea;
+  animation: neonPulse 2s infinite alternate;
+}
+
+@keyframes neonPulse {
+  from { text-shadow: 0 0 5px #fff, 0 0 10px #9333ea, 0 0 20px #9333ea; }
+  to { text-shadow: 0 0 10px #fff, 0 0 25px #c084fc, 0 0 40px #9333ea; }
+}
+
+/* Container for all scene content - this gets glitched */
+.scene-main-content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* ---------- Traditional Scene specific styles (moved from old root) ---------- */
+.trad-scene-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.homecomp1-scene-stack {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* .homecomp1-scene-layer {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity cubic-bezier(0.4, 0, 0.2, 1);
+} */
+
+.homecomp1-scene-layer {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain; /* Forces the entire image to stay visible */
+  object-position: center center; /* Keeps it centered on your screen */
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.homecomp1-scene-layer.active { opacity: 1; }
+.homecomp1-scene-layer.previous {
+  opacity: 1;
+  transition: opacity 0.5s ease 1.5s;
+}
+
+/* ---------- Text and UI Positioning ---------- */
+.homecomp1-rasa-label {
+  position: absolute;
+  top: 60vh;
+  left: 55vh;
+  z-index: 10;
+  display: flex;
+  justify-content: left;
+  width: 100%;
+}
+
+.homecomp1-rasa-label p {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1rem, 5vw, 1.8rem);
+  letter-spacing: 0.01rem;
+  color: #f5d98b;
+  text-shadow: 0 0 20px rgba(212, 170, 84, 0.5);
+  margin: 0;
+}
+
+/* --- Centered Button Fix in HomeComp1.css --- */
+/* --- Ultra-Stable Centering in HomeComp1.css --- */
+.homecomp1-cta-wrap {
+  position: absolute;
+  bottom: 12vh; /* Slightly adjusted for better visual balance */
+  left: 50% !important;
+  /* Use translate instead of translateX to ensure 
+     no other transforms interfere */
+  transform: translate(-50%, 0) !important;
+  
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; /* Higher than scene stack */
+  pointer-events: auto;
+  animation: fadeUp 1.2s ease 1s both;
+}
+
+.homecomp1-cta {
+  padding: 1.8vh 4vw;
+  background: rgba(10, 6, 4, 0.738);
+  border: 1px solid rgba(212, 169, 84, 0.793);
+  color: #f5d98b;
+  font-family: 'Cinzel Decorative', serif; /* Matching your header font */
+  font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+  white-space: nowrap;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.homecomp1-cta:hover {
+  background: #f5d98bbf;
+  color: #000;
+  box-shadow: 0 0 40px rgba(245, 217, 139, 0.3);
+}
+
+/* ---------- Curtains ---------- */
+.homecomp1-curtains {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  pointer-events: none;
+}
+.homecomp1-curtain-left, .homecomp1-curtain-right { width: 50%; height: 100%; overflow: hidden; }
+.homecomp1-curtain-left img, .homecomp1-curtain-right img { width: 100%; height: 100%; object-fit: cover; }
+.homecomp1-curtain-right img { transform: scaleX(-1); }
+
+.homecomp1-curtains.opening .homecomp1-curtain-left { animation: curtainLeft 2s cubic-bezier(0.7, 0, 0.2, 1) forwards; }
+.homecomp1-curtains.opening .homecomp1-curtain-right { animation: curtainRight 2s cubic-bezier(0.7, 0, 0.2, 1) forwards; }
+
+/* ---------- Glitch Transition Layer ---------- */
+.chroma-glitch-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000; /* Above everything */
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+  background-color: transparent;
+}
+
+/* This applies the actual SVG filter to the main content */
+.glitching .scene-main-content {
+  filter: url(#chroma-glitch);
+}
+
+/* Animations */
+@keyframes curtainLeft { 100% { transform: translateX(-105%); } }
+@keyframes curtainRight { 100% { transform: translateX(105%); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 768px) {
+  /* 1. CTA Button Position */
+  .homecomp1-cta-wrap {
+    bottom: 18vh !important;
+    left: 50% !important;
+    transform: translate(-50%, 0) !important;
+  }
+
+  .homecomp1-cta {
+    padding: 1.8vh 10vw;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+  }
+
+  /* 2. Optimized Rasa Label (Placement & Visibility) */
+  .homecomp1-rasa-label {
+    top: 32vh; /* Positioned above the dancer's head */
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    
+    /* Soft dark radial overlay to make gold text readable over bright stage lights */
+    background: radial-gradient(
+      circle, 
+      rgba(0, 0, 0, 0.6) 0%, 
+      rgba(0, 0, 0, 0.3) 50%, 
+      transparent 80%
+    );
+    padding: 2vh 0;
+  }
+
+  .homecomp1-rasa-label p {
+    font-size: 1.4rem; /* Slightly smaller for mobile elegance */
+    letter-spacing: 0.2em;
+    text-align: center;
+    /* Extra glow for premium feel */
+    text-shadow: 0 0 15px rgba(245, 217, 139, 0.6);
+  }
+
+  /* 3. Site Visit Counter Adjustment */
+  .site-visit-counter {
+    top: 15px;
+    right: 15px;
+    transform: scale(0.85); /* Slightly smaller to give more room for heading */
+    transform-origin: top right;
+  }
+
+  /* 4. Heading/Presenter text tweak for mobile */
+  /* If you have a separate div for "Taarangana Presents" in TraditionalScene */
+  .trad-scene-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 25vh;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    z-index: 5;
+    pointer-events: none;
+  }
+}
+
+/* ==========================================================
+   FINAL TWEAK: SLIGHTLY LEFT & DOWN (Added at the end)
+   ========================================================== */
+
+/* 1. Keeps the image pushed down so "Taarangana PRESENTS" is fully visible */
+img.homecomp1-scene-layer {
+  object-fit: cover !important;
+  object-position: center 2% !important; 
+}
+
+/* 2. Moves the emotion words slightly further left and keeps them aligned */
+div.homecomp1-rasa-label {
+  top: 56vh !important;       
+  left: 33vw !important;      /* Nudged further left (was 36vw) */
+  transform: none !important; 
+  justify-content: flex-start !important;
+}

@@ -1,0 +1,86 @@
+/* LogoLoop.css */
+.logoloop {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+.logoloop--horizontal {
+  flex-direction: row;
+}
+
+.logoloop--vertical {
+  flex-direction: column;
+  height: 100%;
+}
+
+.logoloop__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.logoloop--vertical .logoloop__track {
+  flex-direction: column;
+  height: max-content;
+  width: 100%;
+}
+
+.logoloop__list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: var(--logoloop-gap);
+  padding-right: var(--logoloop-gap);
+}
+
+.logoloop--vertical .logoloop__list {
+  flex-direction: column;
+  padding-right: 0;
+  padding-bottom: var(--logoloop-gap);
+}
+
+.logoloop__item {
+  flex-shrink: 0;
+  height: var(--logoloop-logoHeight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoloop__item img,
+.logoloop__node {
+  height: 100%;
+  width: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.logoloop--scale-hover .logoloop__item:hover {
+  transform: scale(1.1);
+}
+
+/* Fade Gradients */
+.logoloop--fade::before,
+.logoloop--fade::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.logoloop--horizontal.logoloop--fade::before {
+  top: 0; left: 0; bottom: 0; width: 15%;
+  background: linear-gradient(to right, var(--logoloop-fadeColor, transparent), transparent);
+}
+
+.logoloop--horizontal.logoloop--fade::after {
+  top: 0; right: 0; bottom: 0; width: 15%;
+  background: linear-gradient(to left, var(--logoloop-fadeColor, transparent), transparent);
+}

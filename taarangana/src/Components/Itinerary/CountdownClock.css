@@ -1,0 +1,194 @@
+:root {
+  --clock-vertical-offset: 30px;
+  --clock-global-size: clamp(300px, 72vmin, 650px);
+  --clock-glow-filter: drop-shadow(0px 0px 15px rgba(184, 115, 51, 0.7));
+  --heading-width: clamp(250px, 15vmin, 600px);
+  --heading-margin-bottom: 60px;
+  --heading-glow-color: rgba(255, 176, 50, 0.7);
+  --frame-scale: 114%;
+  --ring-scale: 72%;
+  --segment-scale: 65%;
+  --gear-size: 18%;
+}
+
+.clock-overlay-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.clock-content-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(var(--clock-vertical-offset));
+  position: relative;
+  opacity: 0; 
+}
+
+/* --- HEADING --- */
+.heading-container {
+  position: relative;
+  margin-bottom: var(--heading-margin-bottom);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.heading-glow {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(217, 137, 62, 0.764) 0%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.heading-img {
+  width: var(--heading-width);
+  object-fit: contain;
+  display: block;
+}
+
+/* --- RADIAL CLOCK LAYERS --- */
+.clock-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--clock-global-size);
+  height: var(--clock-global-size);
+  aspect-ratio: 1 / 1;
+}
+
+.layer-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-fit {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.hand-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  will-change: transform;
+}
+
+.hand-img {
+  transform-origin: bottom center;
+  transform: translateY(-50%);
+  width: auto;
+}
+
+.layer-segments { width: var(--segment-scale); height: var(--segment-scale); z-index: 1; }
+.layer-ring     { width: var(--ring-scale); height: var(--ring-scale); z-index: 2; filter: var(--clock-glow-filter); }
+.layer-frame    { width: var(--frame-scale); height: var(--frame-scale); z-index: 3; filter: var(--clock-glow-filter); }
+.layer-gears    { width: var(--gear-size); height: var(--gear-size); z-index: 6; }
+
+.main-hand   { height: 16%; z-index: 4; }
+.minute-hand { height: 22%; z-index: 5; opacity: 0.9; filter: brightness(1.1); }
+
+/* --- DIGITAL CLOCK (Hidden by default on Desktop) --- */
+.digital-clock-wrapper {
+  display: none;
+}
+
+/* --- 📱 MOBILE RESPONSIVENESS: The Master Layout --- */
+@media (max-width: 768px) {
+  .clock-content-group {
+    position: absolute;
+    top: 85px; 
+    /* 🟢 Increased to 140px to guarantee safe padding above the View Itinerary button */
+    bottom: 140px; 
+    left: 0;
+    right: 0;
+    transform: none; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; 
+    align-items: center;
+  }
+
+  .heading-container {
+    margin-bottom: 0px; 
+  }
+  
+  .heading-img {
+    width: 60vw; 
+    max-width: 220px;
+  }
+
+  .clock-wrapper {
+    /* Uses min() so it shrinks on short screens rather than overflowing */
+    width: min(80vw, 40vh);
+    height: min(80vw, 40vh);
+    max-width: 380px;
+    max-height: 380px;
+    margin: 0; 
+  }
+  
+  /* Horizontal line of mini frosted cards */
+  .digital-clock-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    z-index: 20;
+    width: 90%;
+    justify-content: center;
+  }
+
+  .digital-segment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 5, 20, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(184, 115, 51, 0.4);
+    border-radius: 12px;
+    padding: 12px 10px; 
+    min-width: 60px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6), inset 0 0 10px rgba(184, 115, 51, 0.15);
+  }
+
+  .digital-number {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #e6daad;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .digital-label {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: rgba(230, 218, 173, 0.8);
+    text-transform: uppercase;
+  }
+}

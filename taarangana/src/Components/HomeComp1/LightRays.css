@@ -1,0 +1,15 @@
+.light-rays-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4; /* Behind the label and CTA, above the scene */
+  pointer-events: none;
+  /* Screen blend mode allows rays to interact with the dancer image */
+  mix-blend-mode: screen;
+  /* Reduced blur significantly so rays remain visible */
+  filter: blur(8px); 
+  opacity: 0.9;
+  will-change: transform;
+}

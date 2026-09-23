@@ -1,0 +1,14 @@
+.splash-cursor-container {
+  position: fixed;
+  inset: 0;
+  z-index: 2; /* Sits directly above the galaxy (z-index: 1), below hexagons (z-index: 10) */
+  pointer-events: none; /* Let clicks pass through the container... */
+}
+
+/* ...but allow the canvas itself to track mouse movements in the empty space */
+.splash-cursor-container canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: auto; 
+  display: block;
+}

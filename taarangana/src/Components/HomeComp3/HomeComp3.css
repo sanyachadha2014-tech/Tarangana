@@ -1,0 +1,278 @@
+/* =========================================
+   VIEWPORT & BACKGROUND
+   ========================================= */
+.homecomp3-viewport {
+  width: 100%;
+  height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  background: url("../../assets/back.webp") no-repeat center center;
+  background-size: cover;
+  position: relative;
+  z-index: 10;
+  overflow: hidden; 
+  
+  /* UPDATED PADDING: 
+     Top padding is increased significantly to always clear the fixed navbar. 
+     Bottom padding remains flexible. */
+  padding-top: clamp(100px, 12vh, 140px); 
+  padding-bottom: clamp(20px, 4vh, 80px);
+  padding-left: 0;
+  padding-right: 0;
+  
+  box-sizing: border-box;
+}
+
+.homecomp3-center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  width: 100%;
+  height: 100%;
+  max-width: 1600px;
+  z-index: 20;
+  margin: auto; 
+}
+
+/* =========================================
+   SPOTLIGHT & WHEELS
+   ========================================= */
+.homecomp3-spotlight-layer {
+  position: absolute; 
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.spotlight-wheel {
+  position: absolute;
+  width: clamp(400px, 45vw, 650px);
+  height: auto;
+  top: 20%;
+  opacity: 0.8;
+  transform: translateY(-50%);
+  animation: slow-spin 35s linear infinite;
+}
+
+.wheel-left { left: -5%; }
+.wheel-right { right: -5%; }
+
+@keyframes slow-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* =========================================
+   HEADER & GRID
+   ========================================= */
+.homecomp3-header {
+  margin-bottom: clamp(15px, 3vh, 40px); 
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.8s ease-out;
+}
+
+.homecomp3-header.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.homecomp3-title-img {
+  width: clamp(260px, 40vw, 360px);
+  height: auto;
+  filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.2));
+}
+
+.homecomp3-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(20px, 3vw, 40px); 
+  perspective: 2000px;
+  width: 100%;
+  padding: clamp(20px, 4vh, 50px) 20px; 
+  box-sizing: border-box;
+}
+
+/* =========================================
+   CARD STYLES (FLUID)
+   ========================================= */
+.homecomp3-card-outer {
+  width: min(100%, 340px);
+  max-height: 70vh; 
+  aspect-ratio: 33 / 53;
+  opacity: 0;
+  transform: scale(0.9) translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 0;
+  overflow: visible; 
+}
+
+.homecomp3-card-outer.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.homecomp3-card-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: clamp(16px, 3vw, 28px);
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease-out, box-shadow 0.4s ease, border 0.4s ease;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.homecomp3-card-visual.is-hovered {
+  border: 1px solid rgba(192, 192, 192, 0.4);
+  box-shadow: 0 25px 60px rgba(192, 192, 192, 0.4), 
+              0 0 25px rgba(192, 192, 192, 0.2);
+}
+
+/* =========================================
+   INTERIOR LAYERS
+   ========================================= */
+.homecomp3-solid-bg {
+  position: absolute;
+  inset: 0;
+  background: #0f172a;
+  z-index: 0;
+}
+
+.homecomp3-embroidery-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6; 
+  pointer-events: none;
+}
+
+.homecomp3-assembly {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 5%;
+}
+
+.homecomp3-frame-container {
+  position: relative;
+  height: 72%;
+  aspect-ratio: 1 / 1.35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(50px);
+}
+
+.homecomp3-photo-clip {
+  position: absolute;
+  top: 13%; 
+  left: 13%;
+  width: 74%;
+  height: 74%;
+  z-index: 2;
+  overflow: hidden;
+  clip-path: ellipse(50% 50% at 50% 50%);
+  -webkit-clip-path: ellipse(50% 50% at 50% 50%);
+}
+
+.homecomp3-member-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+  will-change: transform; 
+}
+
+.homecomp3-frame-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.homecomp3-plate-wrapper {
+  width: 90%;
+  transform: translateZ(70px);
+}
+
+.homecomp3-plate-img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.7));
+}
+
+/* =========================================
+   GLITTER TRAIL
+   ========================================= */
+.glitter-particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1000;
+  animation: glitter-burst 1.9s ease-out forwards;
+}
+
+@keyframes glitter-burst {
+  0% { transform: scale(0) translateY(0); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: scale(1.4) translateY(50px); opacity: 0; }
+}
+
+/* =========================================
+   RESPONSIVE (MOBILE ONLY)
+   ========================================= */
+@media (max-width: 768px) {
+  .homecomp3-header {
+    text-align: center;
+  }
+
+  .homecomp3-grid { 
+    justify-content: flex-start;
+    gap: 20px;
+    width: 100vw;
+    overflow-x: auto;
+    overflow-y: hidden; 
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    
+    padding: clamp(20px, 4vh, 50px) calc(50vw - (min(80vw, 320px) / 2)); 
+    perspective: none; 
+  }
+
+  .homecomp3-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .homecomp3-grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .homecomp3-card-outer {
+    width: min(80vw, 320px); 
+    max-height: 65vh; 
+    scroll-snap-align: center; 
+    scroll-snap-stop: always;  
+  }
+
+  .homecomp3-card-outer:last-child {
+    margin-right: 50px; 
+  }
+
+  .spotlight-wheel {
+    display: none; 
+  }
+}

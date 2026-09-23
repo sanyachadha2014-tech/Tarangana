@@ -1,0 +1,90 @@
+/* src/Pages/Itinerary/itinerary.css */
+
+.itinerary-page-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.view-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  background: transparent;
+  z-index: 10;
+}
+
+.view-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.05);
+}
+
+.view-visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: scale(1);
+}
+
+.itinerary-toggle-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid #e6daad;
+  color: #e6daad;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  font-family: serif;
+}
+
+.itinerary-toggle-btn:hover {
+  background: #e6daad;
+  color: #000;
+}
+
+/* 🟢 MOBILE RESPONSIVENESS: Flawless button centering */
+@media (max-width: 768px) {
+  .itinerary-toggle-btn {
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 30px;
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+    padding: 16px 24px; 
+  }
+  .itinerary-toggle-btn:hover {
+    transform: translateX(50%) scale(1.02); 
+  }
+}
+
+/* ==========================================================
+   CUSTOM LAPTOP OVERRIDE: SHIFT ITINERARY CLOCK UPWARDS
+   ========================================================== */
+@media screen and (min-width: 1024px) and (max-width: 1536px) {
+  .view-wrapper {
+    /* Shifts the entire clock container slightly up */
+    transform: translateY(-10px) !important;
+  }
+
+  .view-visible {
+    /* Keeps the scale intact while shifted up */
+    transform: translateY(-10px) scale(1) !important;
+  }
+
+  .view-hidden {
+    /* Keeps the hidden scale intact while shifted up */
+    transform: translateY(-10px) scale(1.05) !important;
+  }
+}

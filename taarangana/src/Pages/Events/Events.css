@@ -1,0 +1,91 @@
+.events-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.background-image {
+  position: fixed;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: brightness(0.65);
+  z-index: 0; 
+  pointer-events: none;
+}
+
+.galaxy-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.galaxy-layer canvas {
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+}
+
+/* NEW: Dedicated layer for the Splash Cursor */
+.splash-cursor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2; /* Sits directly above the galaxy (1) but below content */
+  pointer-events: none; /* Crucial: allows clicks to pass through to the page */
+}
+
+.navbar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 100;
+}
+
+.content-layer {
+  position: relative;
+  z-index: 10; /* Elevated z-index to sit comfortably over the cursor */
+  color: white;
+}
+
+/* ==========================================================
+   CUSTOM LAPTOP OVERRIDE: SHIFT HEADINGS DOWN & SCALE FRAMES
+   ========================================================== */
+@media screen and (min-width: 1024px) and (max-width: 1536px) {
+  /* 1. Stretch the background image all the way to the top behind the navbar */
+  .background-image {
+    top: 0 !important;
+    height: 100vh !important;
+  }
+
+  /* 2. Reset section padding */
+  .homecomp3-viewport,
+  .homecomp4-viewport,
+  .snap-section:has(.homecomp3-grid),
+  .snap-section:has(.homecomp4-grid) {
+    padding-top: 0 !important;
+  }
+
+  /* 3. Shift both "Our Patrons" and "Faculty Advisors" headings down below the navbar */
+  .homecomp3-header,
+  .homecomp4-header,
+  img.homecomp3-title-img,
+  img.homecomp4-title-img {
+    margin-top: 105px !important; 
+  }
+
+  /* 4. Scale down the grids and frames for both sections to fit your laptop screen height */
+  .homecomp3-grid,
+  .homecomp4-grid {
+    transform: scale(0.78) !important;
+    transform-origin: top center !important;
+    margin-top: 10px !important;
+  }
+}

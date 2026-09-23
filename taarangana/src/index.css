@@ -1,0 +1,23 @@
+/* src/index.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  /* Set a safe, pure black body background as the ultimate fallback */
+  background-color: #000 !important;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* Make sure the main React root is transparent */
+  background: transparent !important;
+}

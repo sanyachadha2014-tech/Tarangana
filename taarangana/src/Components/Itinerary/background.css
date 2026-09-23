@@ -1,0 +1,44 @@
+/* src/Components/Itinerary/background.css */
+
+.darkveil-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0; 
+  overflow: hidden;
+  
+  /* Black fallback floor */
+  background-color: #000000; 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  pointer-events: none;
+}
+
+.darkveil-container.fade-in {
+  opacity: 1;
+}
+
+.darkveil-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; 
+  opacity: 0.85; /* Slight opacity reduction so it isn't too overpowering */
+  pointer-events: none;
+  display: block;
+}
+
+/* Deep shadow vignette overlay to frame the clock perfectly */
+.darkveil-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 35%, rgba(0,0,0,0.95) 100%);
+  pointer-events: none;
+  z-index: 2;
+}

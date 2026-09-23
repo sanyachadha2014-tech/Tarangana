@@ -1,0 +1,108 @@
+.member-card-outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  perspective: 1000px;
+}
+
+.member-card-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease, border 0.3s ease;
+  border-radius: 10px;
+}
+
+.member-card-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.member-content-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  gap: 0%; 
+  padding: 10px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.member-frame-assembly {
+  position: relative;
+  height: 90%;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-photo-container {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.member-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.member-frame-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  object-fit: contain;
+}
+
+.member-plate-container {
+  width: 85%;
+  height: auto;
+  max-height: 17%;
+  max-width: 250px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -5px; 
+}
+
+.member-plate-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+}
+
+/* 🟢 STRICT MOBILE SNAPPING: Forces the scroll to lock onto ONE card at a time */
+@media (max-width: 768px) {
+  .member-card-outer {
+    scroll-snap-align: start; 
+    scroll-snap-stop: always; 
+  }
+}

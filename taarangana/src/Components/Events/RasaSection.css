@@ -1,0 +1,218 @@
+.rasa-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Locks container to screen height */
+  padding: 85px 2vw 2vh 2vw; 
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  font-family: Georgia, 'Times New Roman', serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; 
+  overflow: hidden; /* Prevents the whole page from breaking out */
+}
+
+.rasa-header {
+  text-align: center;
+  margin-bottom: 2vh;
+  flex-shrink: 0;
+}
+
+.rasa-title {
+  font-size: clamp(1.8rem, 4vh, 3rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.5vh 0;
+  letter-spacing: -0.5px;
+}
+
+.rasa-title span {
+  color: #cfb75f;
+}
+
+.rasa-subtitle {
+  font-size: clamp(0.85rem, 1.8vh, 1rem);
+  color: #e6daad;
+  font-style: italic;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+.rasa-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, minmax(0, 1fr)); 
+  gap: 1.5vh 1.5vw; 
+  max-width: 1400px;
+  width: 100%;
+  flex-grow: 1; 
+  min-height: 0; 
+  
+  /* FIX: Add padding to act as a buffer zone for the hover scale and box-shadow */
+  padding: 40px; 
+  box-sizing: border-box;
+}
+
+.rasa-card {
+  position: relative;
+  background: rgba(20, 25, 45, 0.75);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.5vh 1.5vw;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+  text-align: left;
+  font-family: inherit;
+  width: 100%;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 0 28px var(--card-border);
+}
+
+.rasa-card-title {
+  font-size: clamp(1rem, 2vh, 1.4rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.5vh 0;
+}
+
+.rasa-card-rasa {
+  font-style: italic;
+  font-size: clamp(0.7rem, 1.3vh, 0.85rem);
+  margin: 0 0 0.8vh 0;
+  color: var(--rasa-color);
+}
+
+.rasa-card-desc {
+  font-size: clamp(0.7rem, 1.3vh, 0.85rem);
+  color: #b0b8c8;
+  line-height: 1.3;
+  margin: 0 0 1vh 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.rasa-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  font-size: clamp(0.65rem, 1.1vh, 0.75rem);
+  color: #7a8494;
+  margin-top: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.rasa-card-meta span { display: flex; align-items: center; gap: 4px; }
+.rasa-card-meta svg { width: clamp(10px, 1.8vh, 14px); height: clamp(10px, 1.8vh, 14px); }
+
+/* --- Hover Effects properly isolated for non-touch devices --- */
+@media (hover: hover) {
+  .rasa-card:hover {
+    transform: scale(1.03);
+    background: rgba(30, 38, 65, 0.85);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45), 0 0 40px var(--card-border), 0 0 70px var(--card-border);
+  }
+  .rasa-dialog-close:hover { 
+    color: #ffffff; 
+  }
+  .rasa-register-btn:hover { 
+    opacity: 0.9; 
+  }
+}
+
+/* Dialog Styles */
+.rasa-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px); padding: 16px; }
+
+/* Fixed Modal Sizing - fluid width ensures it breathes nicely on small screens */
+.rasa-dialog { 
+  position: relative; 
+  width: 90%; /* Fluid width */
+  max-width: 480px; /* Hard cap */
+  max-height: 90vh; 
+  overflow-y: auto; 
+  background: #0f1225; 
+  border: 1px solid #2a2f45; 
+  border-radius: 16px; 
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5); 
+}
+
+.rasa-dialog-close { position: absolute; right: 16px; top: 16px; z-index: 10; width: 32px; height: 32px; border-radius: 50%; background: #1a1f35; border: none; color: #7a8494; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
+.rasa-dialog-body { padding: 32px; }
+.rasa-dialog-title { font-size: 1.8rem; font-weight: 700; color: #ffffff; margin: 0 0 4px 0; padding-right: 24px; /* Avoid crossing the close button */ }
+.rasa-dialog-rasa { font-style: italic; margin: 0 0 16px 0; color: var(--rasa-color); }
+.rasa-dialog-meta { display: flex; align-items: center; gap: 20px; font-size: 0.875rem; color: #7a8494; margin-bottom: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.rasa-dialog-meta span { display: flex; align-items: center; gap: 6px; }
+.rasa-dialog-meta svg { width: 16px; height: 16px; }
+.rasa-dialog-desc { font-size: 0.95rem; color: #b0b8c8; line-height: 1.7; margin: 0 0 24px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.rasa-why-box { background: rgba(25, 30, 50, 0.6); border-left: 4px solid rgba(245, 197, 66, 0.5); border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+.rasa-why-title { font-style: italic; color: #e7d07e; font-size: 0.875rem; margin: 0 0 8px 0; }
+.rasa-why-text { font-size: 0.85rem; color: #7a8494; line-height: 1.6; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.rasa-register-btn { width: 100%; padding: 14px; background: #e7d07e; color: #0f1225; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer; transition: opacity 0.2s; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+
+/* Tablet & Mobile Layout */
+/* Tablet & Mobile Layout */
+@media (max-width: 1024px) {
+  .rasa-container {
+    padding: 85px 0 2vh 0; /* Removed side padding here so we don't double up with the grid's new padding */
+  }
+
+  /* Make sure header doesn't touch edges now that container padding is gone */
+  .rasa-header {
+    padding: 0 5vw; 
+  }
+
+  .rasa-grid {
+    grid-template-columns: 1fr; 
+    grid-template-rows: auto;
+    gap: 16px;
+    overflow-y: auto; 
+    
+    /* FIX: Top, Right, Bottom, Left buffer zones for mobile */
+    padding: 20px 5vw 60px 5vw; 
+    
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+  }
+  
+  .rasa-grid::-webkit-scrollbar {
+    display: none; 
+  }
+
+  .rasa-card {
+    padding: 24px; 
+  }
+
+  .rasa-card-title {
+    font-size: 1.3rem; 
+  }
+  
+  .rasa-card-desc {
+    font-size: 0.95rem;
+    -webkit-line-clamp: 3; 
+    line-clamp: 3;
+  }
+
+  .rasa-card-meta {
+    font-size: 0.85rem;
+    margin-top: 16px;
+  }
+
+  .rasa-dialog-body {
+    padding: 24px;
+  }
+  
+  .rasa-dialog-title {
+    font-size: 1.5rem;
+  }
+}
