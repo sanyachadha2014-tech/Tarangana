@@ -145,7 +145,7 @@
   background-position: center;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.15; 
+  opacity: 0.12; /* Adjusted sweet spot for the row embroidery transparency */
   
   -webkit-mask-image: linear-gradient(black, black);
   mask-image: linear-gradient(black, black);

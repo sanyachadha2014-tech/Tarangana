@@ -17,18 +17,15 @@ const GLOW_COLORS = [
 ];
 
 export default function HomeComp5() {
-  const [offset, setOffset] = useState(0);
   const [activeGlow, setActiveGlow] = useState(null);
-  
-  // Mobile specific states
   const [isMobile, setIsMobile] = useState(false);
-  const [hasTouched, setHasTouched] = useState(false);
   const [mobileCenterIndex, setMobileCenterIndex] = useState(null);
 
+  // Arrow visibility states
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
   // Refs
-  const requestRef = useRef();
-  const isVisibleRef = useRef(false);
-  const isPausedRef = useRef(false);
   const rootRef = useRef(null);
   const trackRef = useRef(null);
   const cardRefs = useRef([]);
@@ -41,11 +38,6 @@ export default function HomeComp5() {
     }));
   }, []);
 
-  const displayCards = useMemo(() => [...smaranCards, ...smaranCards, ...smaranCards], [smaranCards]);
-  
-  const cardWidth = 340; 
-  const totalWidth = smaranCards.length * cardWidth;
-
   // 1. Preloader & Mobile Detector
   useEffect(() => {
     const wheelImg = new Image();
@@ -53,49 +45,46 @@ export default function HomeComp5() {
     importedImages.forEach((src) => { const img = new Image(); img.src = src; });
 
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile(); // Check immediately
+    checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // 2. Main Section Visibility Observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { isVisibleRef.current = entry.isIntersecting; },
-      { threshold: 0.05 }
-    );
-    if (rootRef.current) observer.observe(rootRef.current);
-    return () => observer.disconnect();
-  }, []);
+  // 2. Track scroll boundaries to toggle arrows dynamically
+  const checkScrollPosition = () => {
+    if (!trackRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = trackRef.current;
+    
+    // Tolerance buffer of 5px for precision calculation across screen types
+    const isAtStart = scrollLeft <= 5;
+    const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 5;
 
-  // 3. Desktop Animation Loop
-  const animate = () => {
-    if (!isMobile && !isPausedRef.current && isVisibleRef.current && totalWidth > 0) {
-      setOffset((prev) => (prev + 0.8) % totalWidth);
-    }
-    requestRef.current = requestAnimationFrame(animate);
+    setShowLeftArrow(!isAtStart);
+    setShowRightArrow(!isAtEnd);
   };
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current);
-  }, [isMobile, totalWidth]);
+    // Initial position check
+    checkScrollPosition();
+  }, []);
 
-  // 4. Mobile: Center Card Observer (Applies Glow & Scale)
+  // 3. Active Card Intersection Observer (Applies Glow & Scale on scroll/swipe)
   useEffect(() => {
-    if (!isMobile || !trackRef.current) return;
+    if (!trackRef.current) return;
 
     const cardObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const index = Number(entry.target.dataset.index);
-          setActiveGlow(displayCards[index].glow);
-          setMobileCenterIndex(index);
+          setActiveGlow(smaranCards[index].glow);
+          if (isMobile) {
+            setMobileCenterIndex(index);
+          }
         }
       });
     }, {
       root: trackRef.current,
-      threshold: 0.6 // Card must be 60% in view to become the "active" center card
+      threshold: 0.6
     });
 
     cardRefs.current.forEach(card => {
@@ -103,21 +92,20 @@ export default function HomeComp5() {
     });
 
     return () => cardObserver.disconnect();
-  }, [isMobile, displayCards]);
+  }, [isMobile, smaranCards]);
 
-  // 5. Mobile: Auto-Pan Interval (Clears on Touch)
-  useEffect(() => {
-    if (!isMobile || hasTouched) return;
-    
-    // Slowly advance the native scroll container
-    const autoScroll = setInterval(() => {
-      if (trackRef.current && isVisibleRef.current) {
-        trackRef.current.scrollLeft += 1; 
-      }
-    }, 15);
+  // 4. Scroll Left / Right button handlers
+  const scrollLeft = () => {
+    if (trackRef.current) {
+      trackRef.current.scrollBy({ left: -340, behavior: 'smooth' });
+    }
+  };
 
-    return () => clearInterval(autoScroll);
-  }, [isMobile, hasTouched]);
+  const scrollRight = () => {
+    if (trackRef.current) {
+      trackRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="hc5-root" ref={rootRef}>
@@ -135,16 +123,23 @@ export default function HomeComp5() {
         </header>
 
         <div className="hc5-carousel-viewport">
+          {/* Left Arrow Button (Hides automatically at start) */}
+          <button 
+            className={`hc5-arrow-btn hc5-arrow-left ${!showLeftArrow ? 'hidden' : ''}`} 
+            onClick={scrollLeft} 
+            aria-label="Scroll Left"
+          >
+            &#10094;
+          </button>
+
           <div className="hc5-carousel-blur" />
 
           <div 
             ref={trackRef}
-            // Add native scrolling classes for mobile, and determine if snapping should be active
-            className={`hc5-carousel-track ${isMobile ? 'is-mobile' : ''} ${isMobile && hasTouched ? 'snap-enabled' : ''}`}
-            style={{ transform: isMobile ? 'none' : `translate3d(${-offset}px, 0, 0)` }}
-            onTouchStart={() => setHasTouched(true)} // Regain manual control permanently
+            className="hc5-carousel-track"
+            onScroll={checkScrollPosition}
           >
-            {displayCards.map((card, index) => {
+            {smaranCards.map((card, index) => {
               const isActiveMobile = isMobile && mobileCenterIndex === index;
               return (
                 <div 
@@ -153,18 +148,27 @@ export default function HomeComp5() {
                   ref={(el) => (cardRefs.current[index] = el)}
                   className={`hc5-card ${isActiveMobile ? 'active-mobile' : ''}`}
                   onMouseEnter={() => {
-                    if (!isMobile) { setActiveGlow(card.glow); isPausedRef.current = true; }
+                    if (!isMobile) setActiveGlow(card.glow);
                   }}
                   onMouseLeave={() => {
-                    if (!isMobile) { setActiveGlow(null); isPausedRef.current = false; }
+                    if (!isMobile) setActiveGlow(null);
                   }}
                 >
                   <img src={card.image} alt="Gallery" className="hc5-card-img" />
                   <div className="hc5-card-id">{card.id}</div>
                 </div>
-              )
+              );
             })}
           </div>
+
+          {/* Right Arrow Button (Hides automatically at end) */}
+          <button 
+            className={`hc5-arrow-btn hc5-arrow-right ${!showRightArrow ? 'hidden' : ''}`} 
+            onClick={scrollRight} 
+            aria-label="Scroll Right"
+          >
+            &#10095;
+          </button>
         </div>
       </section>
     </div>

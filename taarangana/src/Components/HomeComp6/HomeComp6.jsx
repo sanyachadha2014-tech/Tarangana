@@ -12,7 +12,7 @@ import wheel9 from '../../assets/wheel9.webp';
 const questions = [
   {
     q: "When and where is Etherea happening?",
-    a: "Etherea takes over the IGDTUW campus on 18-19 March, 2026. Gates open at 11 AM and the fest runs till around 8:30 PM each day."
+    a: "Etherea takes over the IGDTUW campus on 22-23 October, 2026. Gates open at 11 AM and the fest runs till around 8:30 PM each day."
   },
   {
     q: "How do I register for competitions?",

@@ -58,8 +58,6 @@
   to   { transform: translateX(-50%) rotate(360deg); }
 }
 
-/* REMOVED: .hc5-background-img::after (which caused the blur over the wheel) */
-
 /* Reactive Glow Layer */
 .hc5-dynamic-glow {
   position: absolute;
@@ -112,7 +110,8 @@
   width: 100%;
   display: flex;
   align-items: center;
-  position: relative; /* Anchor for the dedicated blur layer */
+  justify-content: center;
+  position: relative;
 }
 
 /* Dedicated blur layer strictly behind the carousel */
@@ -125,17 +124,29 @@
   height: 380px;
   background: radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 60%);
   filter: blur(45px);
-  z-index: 1; /* Sits directly behind the track layer */
+  z-index: 1;
   pointer-events: none;
 }
 
+/* Scrollable Track */
 .hc5-carousel-track {
   display: flex;
   gap: 40px; 
-  padding: 30px 0;
+  padding: 30px 60px;
   will-change: transform;
-  z-index: 2; /* Ensures cards sit over the dedicated blur */
+  z-index: 2;
   position: relative;
+  
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+
+.hc5-carousel-track::-webkit-scrollbar {
+  display: none;
 }
 
 .hc5-card {
@@ -148,6 +159,7 @@
   background: #111;
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  scroll-snap-align: center;
 }
 
 .hc5-card-img {
@@ -182,49 +194,82 @@
   border-radius: 5px;
 }
 
+/* Carousel Arrow Buttons with Fade Visibility */
+.hc5-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  background: rgba(20, 10, 35, 0.8);
+  border: 1px solid rgba(230, 218, 173, 0.4);
+  color: #e6daad;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(10px);
+  opacity: 1;
+  visibility: visible;
+}
+
+.hc5-arrow-btn.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hc5-arrow-btn:hover {
+  background: #e6daad;
+  color: #000;
+  border-color: #e6daad;
+  box-shadow: 0 0 15px rgba(230, 218, 173, 0.5);
+}
+
+.hc5-arrow-left {
+  left: 30px;
+}
+
+.hc5-arrow-right {
+  right: 30px;
+}
+
 /* Mobile Scaling */
-/* Mobile Scaling & Native Swipe Handling */
 @media (max-width: 768px) {
-  /* Push background image down, reduce size, keep opacity */
   .hc5-background-img {
     bottom: -300px;
     width: 450px;
     height: 450px;
-    opacity: 0.88; /* Keeping opacity identical */
+    opacity: 0.88;
   }
 
-  /* Override the track to use native horizontal scrolling */
-  .hc5-carousel-track.is-mobile {
+  .hc5-carousel-track {
     width: 100vw;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    gap: 20px; /* Reduced gap so the next card obviously peeks */
-    padding: 30px 20px; /* Add padding to the sides so the first card isn't glued to the edge */
-    scroll-behavior: auto; /* Keeps the JS interval smooth */
-    
-    /* Hide the scrollbar for a clean look */
-    -ms-overflow-style: none;  
-    scrollbar-width: none;  
-  }
-  
-  .hc5-carousel-track.is-mobile::-webkit-scrollbar { 
-    display: none; 
+    gap: 20px;
+    padding: 30px 20px;
   }
 
-  /* Only enable strict snapping AFTER the user touches the screen */
-  .hc5-carousel-track.is-mobile.snap-enabled {
-    scroll-snap-type: x mandatory;
-  }
-
-  /* Card setup for native mobile scrolling */
   .hc5-card {
     flex: 0 0 240px;
     height: 340px;
-    scroll-snap-align: center; /* Snaps the card perfectly to the middle */
-    transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
   }
 
-  /* Hover doesn't exist on mobile; instead, the IntersectionObserver adds this class */
+  .hc5-arrow-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .hc5-arrow-left {
+    left: 10px;
+  }
+  .hc5-arrow-right {
+    right: 10px;
+  }
+
   .hc5-card.active-mobile {
     transform: scale(1.08) translateY(-10px);
     z-index: 50;
